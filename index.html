@@ -27,6 +27,7 @@
             background-color: var(--light);
             color: var(--text);
             line-height: 1.6;
+            scroll-behavior: smooth; /* 优化原生滚动流畅度 */
         }
 
         header {
@@ -104,6 +105,7 @@
             background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.4)), url('https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2073&q=80');
             background-size: cover;
             background-position: center;
+            background-attachment: fixed; /* 增加视差效果，提升风格独特性 */
             height: 80vh;
             display: flex;
             align-items: center;
@@ -114,6 +116,7 @@
         .hero-content {
             max-width: 800px;
             margin: 0 auto;
+            padding: 0 1rem; /* 移动端左右内边距，防止文字溢出 */
         }
 
         .hero h1 {
@@ -180,6 +183,7 @@
             color: var(--text);
             max-width: 700px;
             margin: 0 auto;
+            padding: 0 1rem; /* 移动端左右内边距 */
         }
 
         .about-content {
@@ -322,6 +326,7 @@
             max-width: 700px;
             margin-left: auto;
             margin-right: auto;
+            padding: 0 1rem; /* 移动端左右内边距 */
         }
 
         .cta .btn {
@@ -422,6 +427,7 @@
             cursor: pointer;
         }
 
+        /* 媒体查询 - 平板设备 */
         @media (max-width: 992px) {
             .about-content {
                 grid-template-columns: 1fr;
@@ -438,8 +444,14 @@
             .stats {
                 grid-template-columns: repeat(2, 1fr);
             }
+
+            .about-img {
+                max-width: 80%;
+                margin: 0 auto; /* 居中显示图片 */
+            }
         }
 
+        /* 媒体查询 - 手机设备 */
         @media (max-width: 768px) {
             .hero h1 {
                 font-size: 2.5rem;
@@ -486,11 +498,27 @@
             .stats {
                 grid-template-columns: 1fr;
             }
+
+            .about-img {
+                max-width: 100%; /* 手机端图片占满宽度 */
+            }
         }
 
-        /* Animation for stats counter */
+        /* 计数器动画样式 */
         .counter {
             transition: all 0.5s ease;
+        }
+
+        /* 增加元素进入视口的淡入效果，提升风格独特性 */
+        .stat-item, .initiative-card {
+            opacity: 1;
+            transform: translateY(0);
+            transition: all 0.6s ease;
+        }
+
+        .stat-item.visible, .initiative-card.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
     </style>
 </head>
@@ -503,10 +531,10 @@
                 <span>Green Network</span>
             </div>
             <nav>
-                <div class="mobile-menu">
+                <div class="mobile-menu" id="mobileMenu">
                     <i class="fas fa-bars"></i>
                 </div>
-                <ul>
+                <ul id="navUl">
                     <li><a href="#home">Home</a></li>
                     <li><a href="#about">About</a></li>
                     <li><a href="#initiatives">Initiatives</a></li>
@@ -535,7 +563,7 @@
             </div>
             <div class="about-content">
                 <div class="about-img">
-                    <img src="https://images.unsplash.com/photo-1507591064344-4c6ce005b128?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" alt="Team planting trees">
+                    <img src="https://images.unsplash.com/photo-1507591064344-4c6ce005b128?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" alt="Team planting trees" loading="lazy"> <!-- 懒加载优化 -->
                 </div>
                 <div class="about-text">
                     <h3>Our Mission</h3>
@@ -580,7 +608,7 @@
             <div class="initiatives-grid">
                 <div class="initiative-card">
                     <div class="initiative-img">
-                        <img src="https://dialogue.earth/content/uploads/2021/04/lessons-from-the-rush-to-reforest-china-dialogue-2400x1599.jpg" alt="Reforestation">
+                        <img src="https://dialogue.earth/content/uploads/2021/04/lessons-from-the-rush-to-reforest-china-dialogue-2400x1599.jpg" alt="Reforestation" loading="lazy"> <!-- 懒加载优化 -->
                     </div>
                     <div class="initiative-content">
                         <h3>Global Reforestation</h3>
@@ -590,7 +618,7 @@
                 </div>
                 <div class="initiative-card">
                     <div class="initiative-img">
-                        <img src="https://images.unsplash.com/photo-1621451537084-482c73073a0f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1974&q=80" alt="Ocean Conservation">
+                        <img src="https://images.unsplash.com/photo-1621451537084-482c73073a0f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1974&q=80" alt="Ocean Conservation" loading="lazy"> <!-- 懒加载优化 -->
                     </div>
                     <div class="initiative-content">
                         <h3>Ocean Conservation</h3>
@@ -600,7 +628,7 @@
                 </div>
                 <div class="initiative-card">
                     <div class="initiative-img">
-                        <img src="https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2072&q=80" alt="Renewable Energy">
+                        <img src="https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2072&q=80" alt="Renewable Energy" loading="lazy"> <!-- 懒加载优化 -->
                     </div>
                     <div class="initiative-content">
                         <h3>Renewable Energy</h3>
@@ -669,54 +697,107 @@
     </footer>
 
     <script>
-        // Mobile Menu Toggle
-        document.querySelector('.mobile-menu').addEventListener('click', function() {
-            document.querySelector('nav ul').classList.toggle('active');
+        // 1. 移动端菜单切换（优化：增加图标切换，提升交互体验）
+        const mobileMenu = document.getElementById('mobileMenu');
+        const navUl = document.getElementById('navUl');
+        const menuIcon = mobileMenu.querySelector('i');
+
+        mobileMenu.addEventListener('click', function() {
+            navUl.classList.toggle('active');
+            // 切换菜单/关闭图标
+            if (navUl.classList.contains('active')) {
+                menuIcon.classList.remove('fa-bars');
+                menuIcon.classList.add('fa-times');
+            } else {
+                menuIcon.classList.remove('fa-times');
+                menuIcon.classList.add('fa-bars');
+            }
         });
 
-        // Counter Animation
+        // 2. 计数器动画（优化：防止重复执行，增加节流，提升性能）
+        let countersAnimated = false; // 标记计数器是否已执行
         function animateCounters() {
+            if (countersAnimated) return; // 已执行则直接返回，防止重复触发
+
             const counters = document.querySelectorAll('.counter');
-            const speed = 200; // The lower the slower
-            
+            const speed = 200; // 数值增长速度，数值越小越慢
+
             counters.forEach(counter => {
                 const target = +counter.getAttribute('data-target');
-                const count = +counter.innerText;
-                
-                const inc = target / speed;
-                
-                if(count < target) {
-                    counter.innerText = Math.ceil(count + inc);
-                    setTimeout(animateCounters, 1);
-                } else {
-                    counter.innerText = target;
-                }
+                let count = 0; // 初始化计数为0
+
+                // 定义单次增长函数
+                const updateCount = () => {
+                    const inc = Math.ceil(target / speed); // 计算每次增长的步长
+                    if (count < target) {
+                        count += inc;
+                        // 防止超过目标值
+                        if (count > target) count = target;
+                        counter.innerText = count;
+                        setTimeout(updateCount, 1);
+                    } else {
+                        counter.innerText = target;
+                    }
+                };
+
+                updateCount();
             });
+
+            countersAnimated = true; // 标记为已执行
         }
 
-        // Initialize counters when page loads
-        window.addEventListener('load', animateCounters);
+        // 3. 监听滚动，进入视口后执行计数器动画（更符合用户体验）
+        function checkCounterVisibility() {
+            const statsSection = document.querySelector('.stats');
+            if (!statsSection) return;
 
-        // Smooth scrolling for navigation links
+            const rect = statsSection.getBoundingClientRect();
+            // 当元素进入视口（顶部小于窗口高度，底部大于0）
+            if (rect.top < window.innerHeight * 0.8 && rect.bottom > 0) {
+                animateCounters();
+                // 移除滚动监听，节省性能
+                window.removeEventListener('scroll', checkCounterVisibility);
+            }
+        }
+
+        // 4. 平滑滚动（优化：兼容所有锚点链接，修复导航栏遮挡问题）
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function(e) {
                 e.preventDefault();
-                
+
                 const targetId = this.getAttribute('href');
-                if(targetId === '#') return;
-                
+                if (targetId === '#') return;
+
                 const targetElement = document.querySelector(targetId);
-                if(targetElement) {
+                if (targetElement) {
+                    const headerHeight = document.querySelector('header').offsetHeight; // 获取导航栏高度
+                    const targetTop = targetElement.offsetTop - headerHeight; // 减去导航栏高度，防止遮挡
+
                     window.scrollTo({
-                        top: targetElement.offsetTop - 80,
+                        top: targetTop,
                         behavior: 'smooth'
                     });
-                    
-                    document.querySelector('nav ul').classList.remove('active');
+
+                    // 移动端点击后关闭菜单
+                    if (navUl.classList.contains('active')) {
+                        navUl.classList.remove('active');
+                        menuIcon.classList.remove('fa-times');
+                        menuIcon.classList.add('fa-bars');
+                    }
                 }
             });
         });
+
+        // 5. 初始化事件监听
+        window.addEventListener('load', function() {
+            // 页面加载完成后，先检查计数器是否在视口内
+            checkCounterVisibility();
+        });
+
+        window.addEventListener('scroll', function() {
+            // 滚动时检查计数器可见性
+            checkCounterVisibility();
+        });
     </script>
 </body>
-
 </html>
